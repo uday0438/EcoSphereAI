@@ -1,0 +1,6 @@
+{
+  "name": "EcoSphere AI",
+  "description": "Your Personal Climate Intelligence System. Predict, track, and reduce your carbon footprint with an advanced Gemini-powered AI coach.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
