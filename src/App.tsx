@@ -16,9 +16,11 @@ import { LeaderboardCard } from "./components/LeaderboardCard";
 import { SmartTipsCard } from "./components/SmartTipsCard";
 import { BackgroundLeaves } from "./components/BackgroundLeaves";
 import { ManifestModal } from "./components/ManifestModal";
+import { ScanGreenPage } from "./components/ScanGreenPage";
+import { Footer } from "./components/Footer";
 
 export default function App() {
-  const [appState, setAppState] = useState<"opening" | "landing" | "dashboard" | "games">("opening");
+  const [appState, setAppState] = useState<"opening" | "landing" | "dashboard" | "games" | "scan">("opening");
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [isManifestOpen, setIsManifestOpen] = useState(false);
   
@@ -190,12 +192,17 @@ export default function App() {
             <GamificationShowcase onEnterApp={() => setAppState("dashboard")} />
             <SdgImpactSection />
             <GamesPreview onGoToGames={() => setAppState("games")} />
+            <Footer onNavigate={(tab) => setAppState(tab)} />
           </main>
         </motion.div>
       )}
 
       {appState === "games" && (
         <GamesPage onBack={() => setAppState("landing")} />
+      )}
+
+      {appState === "scan" && (
+        <ScanGreenPage onBack={() => setAppState("landing")} />
       )}
 
       {appState === "dashboard" && (
@@ -287,7 +294,7 @@ export default function App() {
       {/* Floating Glassmorphic Bottom Navigation Dock - Transparency increased by 40% */}
       {appState !== "opening" && (
         <BottomDock
-          activeTab={appState === "games" ? "games" : appState === "dashboard" ? "dashboard" : "landing"}
+          activeTab={appState === "games" ? "games" : appState === "dashboard" ? "dashboard" : appState === "scan" ? "scan" : "landing"}
           onTabChange={(tab) => setAppState(tab)}
           onReplayIntro={() => setAppState("opening")}
           theme={theme}

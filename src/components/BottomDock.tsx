@@ -3,8 +3,8 @@ import { LayoutDashboard, RotateCcw, Sun, Moon, Gamepad2 } from "lucide-react";
 import { cn } from "../lib/utils";
 
 interface BottomDockProps {
-  activeTab: "landing" | "dashboard" | "games";
-  onTabChange: (tab: "landing" | "dashboard" | "games") => void;
+  activeTab: "landing" | "dashboard" | "games" | "scan";
+  onTabChange: (tab: "landing" | "dashboard" | "games" | "scan") => void;
   onReplayIntro: () => void;
   theme: "dark" | "light";
   onThemeToggle: () => void;
@@ -14,10 +14,12 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
   const isLanding   = activeTab === "landing";
   const isDashboard = activeTab === "dashboard";
   const isGames     = activeTab === "games";
+  const isScan      = activeTab === "scan";
 
   const navItems = [
     { id: "landing" as const,   label: "Home",      isActive: isLanding },
     { id: "dashboard" as const, label: "My Arc ⚡", isActive: isDashboard },
+    { id: "scan" as const,      label: "Eco Scan 🔍", isActive: isScan },
     { id: "games" as const,     label: "Games 🎮",  isActive: isGames },
   ];
 
@@ -88,6 +90,39 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
             <LayoutDashboard className={cn("w-5 h-5 relative z-10 transition-transform duration-200", isDashboard && "scale-105 text-emerald-400")} />
             <span className={cn("text-[10px] font-medium relative z-10", isDashboard ? "text-emerald-400 font-semibold" : "text-slate-400")}>
               My Arc ⚡
+            </span>
+          </button>
+
+          {/* ── Eco Scan ── */}
+          <button
+            onClick={() => onTabChange("scan")}
+            className={cn(
+              "relative flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5",
+              "text-slate-400 hover:text-slate-200 transition-colors cursor-pointer",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+            )}
+            aria-label="Navigate to Eco Scan"
+          >
+            {isScan && (
+              <motion.div layoutId="liquid-pill"
+                className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/25 rounded-full"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }} />
+            )}
+            {isScan && (
+              <motion.span layoutId="liquid-droplet"
+                className="absolute -bottom-1 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_10px_#34d399]"
+                transition={{ type: "spring", stiffness: 300, damping: 20 }} />
+            )}
+            <motion.span className="relative z-10 leading-none select-none"
+              animate={isScan
+                ? { scale: 1.2, filter: "drop-shadow(0 0 8px rgba(52,211,153,0.7)) drop-shadow(0 0 20px rgba(52,211,153,0.35))" }
+                : { scale: 1,   filter: "drop-shadow(0 0 0px transparent)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              style={{ fontSize: "21px" }}>
+              🔍
+            </motion.span>
+            <span className={cn("text-[10px] font-medium relative z-10", isScan ? "text-emerald-400 font-semibold" : "text-slate-400")}>
+              Eco Scan
             </span>
           </button>
 

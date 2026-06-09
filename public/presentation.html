@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSphere AI — Project Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+      --emerald: #10b981;
+      --teal: #14b8a6;
+      --violet: #8b5cf6;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --slate-400: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-gradient);
+      color: #f8fafc;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Slides Container */
+    .slides-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90%;
+      max-width: 960px;
+      height: 80vh;
+      max-height: 600px;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px border;
+      border-color: rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-blur: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95) translateY(20px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 10;
+    }
+
+    /* Glow blobs */
+    .glow-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: 0;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .glow-1 {
+      top: 10%;
+      left: 10%;
+      width: 350px;
+      height: 350px;
+      background: var(--emerald);
+    }
+
+    .glow-2 {
+      bottom: 10%;
+      right: 10%;
+      width: 400px;
+      height: 400px;
+      background: var(--violet);
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 20px;
+    }
+
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--emerald);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .slide-num {
+      font-family: monospace;
+      font-size: 14px;
+      color: var(--slate-400);
+    }
+
+    /* Slide Content */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 0;
+    }
+
+    .slide-title {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(to right, #ffffff, #e2e8f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .shimmer-text {
+      background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+    }
+
+    .slide-desc {
+      color: var(--slate-400);
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      max-w-2xl;
+    }
+
+    /* Feature grids on slides */
+    .slide-grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .grid-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .grid-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--slate-400);
+      line-height: 1.4;
+    }
+
+    /* Slide Footer / Nav Controls */
+    .controls-container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: scale(1.03);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--emerald);
+      width: 20px;
+      border-radius: 9999px;
+    }
+
+    /* Top Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 30;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--emerald), var(--violet));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Keyboard Hints */
+    .kb-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      font-size: 11px;
+      color: var(--slate-400);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+    }
+
+    .accent-emerald { color: var(--emerald); }
+    .accent-violet { color: var(--violet); }
+    .accent-amber { color: var(--amber); }
+    .accent-rose { color: var(--rose); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .slide {
+        padding: 24px;
+        height: 85vh;
+      }
+      .slide-title {
+        font-size: 24px;
+      }
+      .slide-desc {
+        font-size: 13px;
+      }
+      .slide-grid {
+        grid-template-cols: 1fr;
+      }
+      .kb-hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Line -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+
+  <div class="glow-blob glow-1"></div>
+  <div class="glow-blob glow-2"></div>
+
+  <!-- Slides Container -->
+  <div class="slides-container">
+
+    <!-- Slide 1: Welcome -->
+    <div class="slide active">
+      <div class="slide-header">
+        <span class="slide-tag">Overview</span>
+        <span class="slide-num">01 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">EcoSphere AI 🌍</h2>
+        <p class="slide-desc">A premium, Gen-Z carbon footprint simulator, AI sustainability coach, and gamified actions hub localized for India. Empowering users to align daily actions with UN climate goals and global baselines.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon">🧠</div>
+            <div class="card-title">Gemini AI Powered</div>
+            <div class="card-desc">Personal coach advising on grid metrics & Indian localized subsidies.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🎮</div>
+            <div class="card-title">Eco Arcade</div>
+            <div class="card-desc">20 interactive games testing sustainable decision loops.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🔍</div>
+            <div class="card-title">Eco Scan</div>
+            <div class="card-desc">Computer vision mapping item polymers & room footprints.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Chosen Vertical & UN SDGs -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Vertical Alignment</span>
+        <span class="slide-num">02 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Vertical: <span class="shimmer-text">Climate Assistant</span></h2>
+        <p class="slide-desc">Empowering Indians to cut emissions and adopt eco-friendly products, heavily integrated with India's official <strong>Mission LiFE (Lifestyle for Environment)</strong> directive.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon accent-emerald">🌱</div>
+            <div class="card-title">SDG 13: Climate Action</div>
+            <div class="card-desc">Simulating domestic temp changes & offsets to inspire active climate ownership.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-violet">♻️</div>
+            <div class="card-title">SDG 12: Consumption</div>
+            <div class="card-desc">Product scanning to detect hidden single-use plastics & chemical toxins.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-amber">⚡</div>
+            <div class="card-title">SDG 7: Clean Energy</div>
+            <div class="card-desc">Incentivizing rooftop solar conversion & active grid usage reduction.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: AI Sustainability Coach -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">AI integration</span>
+        <span class="slide-num">03 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Gemini Sustainability Coach 🤖</h2>
+        <p class="slide-desc">Powered by <strong>gemini-2.5-flash</strong>. Evaluates personal footprint prompts and returns localized Indian optimization guides.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon">🇮🇳</div>
+            <div class="card-title">Localized Context</div>
+            <div class="card-desc">Recommends Indian transit systems (Delhi/Namma Metro) & local services (Sogo e-waste, solar panels).</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🎛️</div>
+            <div class="card-title">Security & Guardrails</div>
+            <div class="card-desc">Equipped with prompt-injection filters & text input limitations under 500 characters.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🪵</div>
+            <div class="card-title">JSON schema</div>
+            <div class="card-desc">Express API enforces structured outputs for client-side card visualization.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Real-Time Indian Carbon Simulator -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Carbon Math</span>
+        <span class="slide-num">04 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Real-Time Indian Simulator 📊</h2>
+        <p class="slide-desc">Custom calculation engine referencing localized Indian emission baselines vs the national average of <strong>2.8 Tons CO₂/year</strong>.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon accent-amber">🔌</div>
+            <div class="card-title">Grid Electricity</div>
+            <div class="card-desc">Calibrated with India's heavy coal factor of 0.82 kg CO₂/kWh.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-emerald">🚗</div>
+            <div class="card-title">Transit Baselines</div>
+            <div class="card-desc">Cars (0.143 kg/km), Two-Wheelers (0.044 kg/km), CNG Auto-rickshaws (0.065 kg/km).</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-violet">🍛</div>
+            <div class="card-title">Diet Carbon</div>
+            <div class="card-desc">Reduces carbon from mutton/beef (4.5 kg/meal) down to Indian millets (0.3 kg/meal).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Eco Arcade (20 Mini-Games) -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Gamification</span>
+        <span class="slide-num">05 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Eco Arcade 🎮</h2>
+        <p class="slide-desc">A premium gamified hub featuring 20 distinct games teaching climate science, energy conservation, recycling, and sustainable transport.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon">🔀</div>
+            <div class="card-title">Shuffled Layout</div>
+            <div class="card-desc">Grid items shuffle randomly at launch or via manual controls to boost replayability.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🎰</div>
+            <div class="card-title">Randomized Gameplay</div>
+            <div class="card-desc">Questions, options, card decks, and crisis events randomize dynamically at run-time.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">⭐</div>
+            <div class="card-title">Local Storage Sync</div>
+            <div class="card-desc">Earn XP, complete quests, and unlock achievement badges persisted in browser memory.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Eco Scan (Computer Vision) -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Vision Scanner</span>
+        <span class="slide-num">06 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">ScanGreen Computer Vision 🔍</h2>
+        <p class="slide-desc">Integrates computer vision capabilities for immediate product composition checks and full space reviews.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon accent-rose">🥫</div>
+            <div class="card-title">Product Scanner</div>
+            <div class="card-desc">Evaluates product photos, detects hidden polymers, and offers plastic-free alternatives.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-emerald">🏠</div>
+            <div class="card-title">Environment Audit</div>
+            <div class="card-desc">Generates polymer heatmaps, ghost carbon footprint weights, and circular reuse stats.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-violet">📷</div>
+            <div class="card-title">Base64 Transport</div>
+            <div class="card-desc">Resizes images client-side to maintain speed and bypass server payload limits.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Greeny Voice Assistant -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Interface APIs</span>
+        <span class="slide-num">07 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Greeny Voice Assistant 🗣️</h2>
+        <p class="slide-desc">An interactive floating drawer enabling hands-free voice chats using browser-native APIs.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon accent-emerald">🎤</div>
+            <div class="card-title">Speech-to-Text (STT)</div>
+            <div class="card-desc">Binds to webkitSpeechRecognition API for simple, hardware-free speech inputs.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-violet">🔊</div>
+            <div class="card-title">Text-to-Speech (TTS)</div>
+            <div class="card-desc">Binds to SpeechSynthesisUtterance with a friendly, custom-pitched response speaker.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon accent-amber">💬</div>
+            <div class="card-title">System Context</div>
+            <div class="card-desc">Greeny is styled with system prompts detailing the Plastic Soup Partnership and VOC toxin warnings.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Technical Architecture -->
+    <div class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">System Design</span>
+        <span class="slide-num">08 / 08</span>
+      </div>
+      <div class="slide-body">
+        <h2 class="slide-title">Technical Architecture 💻</h2>
+        <p class="slide-desc">A modern full-stack monorepo designed for serverless scalability and deployment.</p>
+        <div class="slide-grid">
+          <div class="grid-card">
+            <div class="card-icon">📦</div>
+            <div class="card-title">Frontend Stack</div>
+            <div class="card-desc">React 19, Vite, TailwindCSS v4, TypeScript, Lucide Icons, and Framer Motion.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">🚀</div>
+            <div class="card-title">Backend API</div>
+            <div class="card-desc">Node.js, Express, and @google/genai SDK calling gemini-2.5-flash.</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-icon">☁️</div>
+            <div class="card-title">Vercel Deployment</div>
+            <div class="card-desc">Single vercel.json routing frontend CDN to backend serverless functions at /api/*.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Controls Container -->
+  <div class="controls-container">
+    <button class="nav-btn" id="prev-btn" disabled>
+      ← Prev
+    </button>
+    <div class="dots-container" id="dots"></div>
+    <button class="nav-btn" id="next-btn">
+      Next →
+    </button>
+  </div>
+
+  <div class="kb-hint">
+    Use <kbd>←</kbd> / <kbd>→</kbd> or <kbd>Space</kbd> to navigate slides
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('dots');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressBar = document.getElementById('progress');
+    let activeIdx = 0;
+
+    // Generate Dots
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      if (idx === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => showSlide(idx));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(idx) {
+      if (idx < 0 || idx >= slides.length) return;
+
+      slides[activeIdx].classList.remove('active');
+      dots[activeIdx].classList.remove('active');
+
+      activeIdx = idx;
+
+      slides[activeIdx].classList.add('active');
+      dots[activeIdx].classList.add('active');
+
+      // Update Buttons
+      prevBtn.disabled = activeIdx === 0;
+      nextBtn.disabled = activeIdx === slides.length - 1;
+
+      // Update Progress Bar
+      const percent = (activeIdx / (slides.length - 1)) * 100;
+      progressBar.style.width = `${percent}%`;
+    }
+
+    prevBtn.addEventListener('click', () => showSlide(activeIdx - 1));
+    nextBtn.addEventListener('click', () => showSlide(activeIdx + 1));
+
+    // Keyboard controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        showSlide(activeIdx + 1);
+      } else if (e.key === 'ArrowLeft') {
+        showSlide(activeIdx - 1);
+      }
+    });
+
+    // Touch Swipe support
+    let startX = 0;
+    window.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    }, false);
+
+    window.addEventListener('touchend', (e) => {
+      let diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          showSlide(activeIdx + 1); // Swiped left
+        } else {
+          showSlide(activeIdx - 1); // Swiped right
+        }
+      }
+    }, false);
+
+    // Initial Progress
+    progressBar.style.width = '0%';
+  </script>
+</body>
+</html>

@@ -49,6 +49,18 @@ An interactive hub with 20 distinct games teaching climate literacy, resource co
   - **SDG 3**: Good Health & Well-Being (78% alignment)
 - Includes progress bars that animate from 0% on scroll and a detailed visual **SDG Impact Dashboard**.
 
+### 5. Eco Scan (Integrated ScanGreen)
+- **Intelligent Product Scanner**: Analyzes product photos to determine plastic load, calculate an Eco-Score (0-100), identify synthetic components, and suggest eco-friendly alternatives.
+- **Environment/Room Audit**: A 7-point multi-modal computer vision scanner that evaluates any room image:
+  - *Polymer Heatmap*: Highlights and labels synthetic vs organic items.
+  - *Ghost Carbon*: Lifecycle CO₂ footprint of items in view.
+  - *Decomposition*: Breakdown lifespan comparison vs organic benchmarks.
+  - *Toxin Detective*: Health risk and VOC alert rating.
+  - *Faux-Natural Buster*: Identifies greenwashed synthetic materials.
+  - *Circular Economy*: Recyclability index.
+  - *Ocean Impact*: Equivalent plastic straws marine burden.
+- **"Greeny" Voice Assistant**: A floating AI bot utilizing native Web Speech APIs (STT / TTS) for hands-free conversational sustainability coaching.
+
 ---
 
 ## ⚙️ How it Works & Assumptions Made
