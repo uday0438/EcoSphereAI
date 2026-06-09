@@ -1,7 +1,6 @@
 import { BookOpen, TreePine, Zap, Target } from "lucide-react";
 import { type EcoMission } from "../types";
 import { motion } from "motion/react";
-import { useState } from "react";
 
 const initialMissions: EcoMission[] = [
   { id: "m1", title: "Take Public Transport to Work", difficulty: "Medium", impactCo2: 4.2, xp: 120, completed: false },
@@ -9,14 +8,19 @@ const initialMissions: EcoMission[] = [
   { id: "m3", title: "Meatless Dinner", difficulty: "Medium", impactCo2: 3.5, xp: 150, completed: false },
 ];
 
-export function EcoMissionsPanel() {
-  const [missions, setMissions] = useState(initialMissions);
+export interface EcoMissionsPanelProps {
+  completedMissions: string[];
+  onCompleteMission: (id: string, xp: number, impact: number) => void;
+}
 
+export function EcoMissionsPanel({ completedMissions, onCompleteMission }: EcoMissionsPanelProps) {
   const toggleMission = (id: string, currentlyCompleted: boolean) => {
-    // Only allow completing
     if (currentlyCompleted) return;
     
-    setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
+    const mission = initialMissions.find(m => m.id === id);
+    if (!mission) return;
+
+    onCompleteMission(id, mission.xp, mission.impactCo2);
     
     // Simulate celebration API call & effect
     const btn = document.getElementById(`mission-btn-${id}`);
@@ -25,6 +29,12 @@ export function EcoMissionsPanel() {
       createCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
     }
   };
+
+  const missions = initialMissions.map(m => ({
+    ...m,
+    completed: completedMissions.includes(m.id)
+  }));
+
 
   return (
     <section aria-labelledby="eco-missions-title" className="glass-card rounded-3xl p-6 h-full flex flex-col">
@@ -132,13 +142,15 @@ function createCelebration(x: number, y: number) {
     const tx = Math.cos(angle) * velocity;
     const ty = Math.sin(angle) * velocity - 50; // Bias upward
     
-    el.animate([
-      { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-      { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-    ], {
-      duration: 600 + Math.random() * 400,
-      easing: 'cubic-bezier(.17,.67,.83,.67)'
-    });
+    if (typeof el.animate === "function") {
+      el.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+      ], {
+        duration: 600 + Math.random() * 400,
+        easing: 'cubic-bezier(.17,.67,.83,.67)'
+      });
+    }
     
     container.appendChild(el);
   }

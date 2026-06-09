@@ -16,6 +16,8 @@ import { SmartTipsCard } from "./components/SmartTipsCard";
 import { BackgroundLeaves } from "./components/BackgroundLeaves";
 import { ManifestModal } from "./components/ManifestModal";
 import { Footer } from "./components/Footer";
+import { CarbonLedger, type LoggedActivity } from "./components/CarbonLedger";
+import { MethodologyModal } from "./components/MethodologyModal";
 
 // Lazy-loaded pages to reduce initial bundle size and boost efficiency
 const GamesPage = lazy(() => import("./components/EcoArcadePage").then(m => ({ default: m.GamesPage })));
@@ -25,7 +27,58 @@ export default function App() {
   const [appState, setAppState] = useState<"opening" | "landing" | "dashboard" | "games" | "scan">("opening");
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [isManifestOpen, setIsManifestOpen] = useState(false);
-  
+  const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
+  const [completedMissions, setCompletedMissions] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem("ecosphere_completed_missions");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [carbonLedger, setCarbonLedger] = useState<LoggedActivity[]>(() => {
+    try {
+      const saved = localStorage.getItem("ecosphere_carbon_ledger");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const handleCompleteMission = (id: string, xp: number, impact: number) => {
+    setCompletedMissions(prev => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      localStorage.setItem("ecosphere_completed_missions", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const handleAddActivity = (title: string, category: "transport" | "energy" | "diet" | "waste", co2Saved: number) => {
+    setCarbonLedger(prev => {
+      const nextAct: LoggedActivity = {
+        id: "act_" + Math.random().toString(36).substring(2, 9),
+        title,
+        category,
+        co2Saved,
+        timestamp: Date.now()
+      };
+      const next = [nextAct, ...prev];
+      localStorage.setItem("ecosphere_carbon_ledger", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const handleDeleteActivity = (id: string) => {
+    setCarbonLedger(prev => {
+      const next = prev.filter(a => a.id !== id);
+      localStorage.setItem("ecosphere_carbon_ledger", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const ecoScore = Math.min(100, 65 + (completedMissions.length * 5) + (carbonLedger.length * 3));
+
   // Theme state persisted to localStorage (defaulting to dark mode)
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     return (localStorage.getItem("theme") as "dark" | "light") || "dark";
@@ -247,7 +300,7 @@ export default function App() {
                       className="w-full h-full -rotate-90 transform" 
                       viewBox="0 0 100 100"
                       role="img"
-                      aria-label="Circular graph displaying Eco Score of 85 out of 100, indicating Excellent standing"
+                      aria-label={`Circular graph displaying Eco Score of ${ecoScore} out of 100`}
                     >
                       
                       <circle cx="50" cy="50" r="40" className="stroke-slate-800 fill-none" strokeWidth="8" />
@@ -259,13 +312,15 @@ export default function App() {
                         strokeLinecap="round"
                         strokeDasharray="251.2"
                         initial={{ strokeDashoffset: 251.2 }}
-                        animate={{ strokeDashoffset: 251.2 - (251.2 * 0.85) }}
+                        animate={{ strokeDashoffset: 251.2 - (251.2 * (ecoScore / 100)) }}
                         transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-5xl font-display font-bold text-white">85</span>
-                      <span className="text-sm text-emerald-400 font-medium mt-1">Excellent</span>
+                      <span className="text-5xl font-display font-bold text-white">{ecoScore}</span>
+                      <span className="text-sm text-emerald-400 font-medium mt-1">
+                        {ecoScore >= 90 ? "Expert" : ecoScore >= 80 ? "Excellent" : ecoScore >= 70 ? "Good" : "Average"}
+                      </span>
                     </div>
                   </div>
                   
@@ -275,8 +330,14 @@ export default function App() {
                       <div className="font-mono text-white flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div> 94%</div>
                     </div>
                     <div>
-                      <div className="text-xs text-slate-400 mb-1">ACTIVE SOURCES</div>
-                      <div className="font-mono text-white items-center gap-1">3 Integrations</div>
+                      <div className="text-xs text-slate-400 mb-1">METHODOLOGY</div>
+                      <button 
+                        id="view-methodology-btn"
+                        onClick={() => setIsMethodologyOpen(true)}
+                        className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline cursor-pointer active:scale-95 transition-all"
+                      >
+                        View Math
+                      </button>
                     </div>
                   </div>
 
@@ -284,22 +345,32 @@ export default function App() {
               </section>
             </div>
 
-            {/* Bottom Row */}
+            {/* Row 2: Logging, Missions, and Simulators */}
             <div className="md:col-span-4">
-              <EmissionsChart />
+              <CarbonLedger 
+                ledger={carbonLedger}
+                onAddActivity={handleAddActivity}
+                onDeleteActivity={handleDeleteActivity}
+              />
+            </div>
+            <div className="md:col-span-4">
+              <EcoMissionsPanel 
+                completedMissions={completedMissions}
+                onCompleteMission={handleCompleteMission}
+              />
             </div>
             <div className="md:col-span-4">
               <SimulatorCard />
             </div>
-            <div className="md:col-span-4">
-              <EcoMissionsPanel />
-            </div>
 
-            {/* Community & Alerts Row (Added for Product-grade value) */}
-            <div className="md:col-span-6">
+            {/* Row 3: Analytics, Community, and Tips */}
+            <div className="md:col-span-4">
+              <EmissionsChart />
+            </div>
+            <div className="md:col-span-4">
               <LeaderboardCard />
             </div>
-            <div className="md:col-span-6">
+            <div className="md:col-span-4">
               <SmartTipsCard />
             </div>
 
@@ -317,6 +388,12 @@ export default function App() {
           onThemeToggle={() => setTheme(prev => prev === "dark" ? "light" : "dark")}
         />
       )}
+
+      {/* Methodology Modal */}
+      <MethodologyModal
+        isOpen={isMethodologyOpen}
+        onClose={() => setIsMethodologyOpen(false)}
+      />
 
       {/* Manifest Modal */}
       <ManifestModal
