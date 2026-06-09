@@ -2,7 +2,6 @@ import { BookOpen, TreePine, Zap, Target } from "lucide-react";
 import { type EcoMission } from "../types";
 import { motion } from "motion/react";
 import { useState } from "react";
-import confetti from "canvas-confetti"; // We'll implement a custom lightweight celebration effect instread since we didn't install this package
 
 const initialMissions: EcoMission[] = [
   { id: "m1", title: "Take Public Transport to Work", difficulty: "Medium", impactCo2: 4.2, xp: 120, completed: false },

@@ -6,7 +6,10 @@ import { EmissionsChart } from "./components/AnalyticsCharts";
 import { EcoMissionsPanel } from "./components/EcoMissionsPanel";
 import { SimulatorCard } from "./components/SimulatorCard";
 import { OpeningSequence } from "./components/OpeningSequence";
-import { FeatureBentoGrid, StatsStrip } from "./components/LandingPage";
+import { FeatureBentoGrid, HeroStats, GamesPreview } from "./components/LandingPage";
+import { GamificationShowcase } from "./components/GamificationShowcase";
+import { SdgImpactSection } from "./components/SdgImpactSection";
+import { GamesPage } from "./components/EcoArcadePage";
 import { BottomDock } from "./components/BottomDock";
 import { GreenCertificateModal } from "./components/GreenCertificateModal";
 import { LeaderboardCard } from "./components/LeaderboardCard";
@@ -15,7 +18,7 @@ import { BackgroundLeaves } from "./components/BackgroundLeaves";
 import { ManifestModal } from "./components/ManifestModal";
 
 export default function App() {
-  const [appState, setAppState] = useState<"opening" | "landing" | "dashboard">("opening");
+  const [appState, setAppState] = useState<"opening" | "landing" | "dashboard" | "games">("opening");
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [isManifestOpen, setIsManifestOpen] = useState(false);
   
@@ -56,53 +59,143 @@ export default function App() {
 
 
           <main className="flex-1 overflow-y-auto pb-32">
-            {/* Massive Hero Section */}
-            <div className="relative pt-20 pb-32 overflow-hidden flex flex-col items-center text-center px-4">
-              
-              {/* Abstract CSS Earth Background Element */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-green-500/10 to-blue-500/10 rounded-full blur-[100px] -z-10" />
+            {/* ── Gen Z Hero Section ── */}
+            <div className="relative pt-16 pb-24 overflow-hidden flex flex-col items-center text-center px-4">
 
-              <motion.div 
+              {/* Multi-orb vivid background */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-gradient-to-tr from-emerald-500/15 via-violet-500/10 to-blue-500/15 rounded-full blur-[130px] -z-10" />
+              <div className="absolute top-16 left-[5%] w-80 h-80 bg-violet-500/8 rounded-full blur-[90px] -z-10" />
+              <div className="absolute bottom-10 right-[5%] w-60 h-60 bg-amber-500/8 rounded-full blur-[70px] -z-10" />
+
+              {/* Floating emoji decorations */}
+              <motion.span className="absolute top-14 left-[6%] text-4xl select-none pointer-events-none"
+                animate={{ y: [0,-12,0], rotate: [-3,3,-3] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>🌿</motion.span>
+              <motion.span className="absolute top-28 right-[7%] text-3xl select-none pointer-events-none"
+                animate={{ y: [0,-9,0], rotate: [3,-3,3] }} transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}>✨</motion.span>
+              <motion.span className="absolute bottom-28 left-[10%] text-3xl select-none pointer-events-none hidden md:block"
+                animate={{ y: [0,-11,0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}>⚡</motion.span>
+              <motion.span className="absolute bottom-36 right-[9%] text-4xl select-none pointer-events-none hidden md:block"
+                animate={{ y: [0,-14,0], rotate: [-2,2,-2] }} transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}>🌍</motion.span>
+              <motion.span className="absolute top-1/2 left-[2%] text-2xl select-none pointer-events-none hidden lg:block"
+                animate={{ y: [0,-8,0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}>🔋</motion.span>
+              <motion.span className="absolute top-1/3 right-[2%] text-2xl select-none pointer-events-none hidden lg:block"
+                animate={{ y: [0,-10,0] }} transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}>🌱</motion.span>
+
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="max-w-4xl mx-auto"
+                className="w-full max-w-5xl mx-auto"
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 text-sm font-medium text-emerald-400 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Gemini-Powered Engine Live
-                </div>
-                
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold text-white tracking-tight mb-8 leading-tight">
-                  Your Personal <br/>
-                  <span className="text-gradient">Climate Operating System</span>
+                {/* Viral badge */}
+                <motion.div
+                  className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-violet-500/12 border border-violet-500/30 text-sm font-bold text-violet-300 mb-8 cursor-default"
+                  animate={{ boxShadow: ["0 0 16px rgba(167,139,250,0.15)","0 0 36px rgba(167,139,250,0.40)","0 0 16px rgba(167,139,250,0.15)"] }}
+                  transition={{ duration: 2.8, repeat: Infinity }}
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping-soft absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-400" />
+                  </span>
+                  <span>85k+ people living their Planet Era rn</span>
+                  <span className="text-base">🔥</span>
+                </motion.div>
+
+                {/* Main headline */}
+                <h1 className="text-5xl sm:text-6xl md:text-8xl font-display font-black text-white tracking-tight mb-5 leading-[0.92]">
+                  Slay sustainably.<br />
+                  <span className="shimmer-text">Save the planet.</span>
                 </h1>
-                
-                <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                  Go beyond calculators. EcoSphere uses Google's Vertex AI to predict, analyze, and assist you in lowering your environmental impact through real-time telemetry and personalized coaching.
+
+                {/* Sub-headline pill */}
+                <div className="flex justify-center mb-4">
+                  <span className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-sm font-semibold text-emerald-400 tracking-wide">
+                    ✦ Main character energy — but make it eco ✦
+                  </span>
+                </div>
+
+                {/* Subtext */}
+                <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-xl mx-auto mb-3 leading-relaxed">
+                  Not your parents' climate app.{" "}
+                  <span className="text-white font-semibold">EcoSphere turns your daily life into a sustainability flex</span>{" "}
+                  — with AI, XP rewards & real impact.
+                </p>
+                <p className="text-sm text-slate-500 mb-10">
+                  Powered by Google Gemini &nbsp;·&nbsp; Set up in 2 min &nbsp;·&nbsp; Zero guilt trips &nbsp;·&nbsp; Totally free
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <button 
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+                  <motion.button
                     onClick={() => setAppState("dashboard")}
-                    className="w-full sm:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 rounded-full font-semibold text-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full sm:w-auto px-9 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 rounded-full font-black text-lg cursor-pointer animate-neon-pulse"
                   >
-                    Enter Open Beta
-                  </button>
-                  <button
+                    Let&apos;s Go 🚀
+                  </motion.button>
+                  <motion.button
                     onClick={() => setIsManifestOpen(true)}
-                    className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-full font-semibold text-lg transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.08)" }}
+                    whileTap={{ scale: 0.96 }}
+                    className="w-full sm:w-auto px-9 py-4 bg-white/4 text-white border border-white/12 rounded-full font-semibold text-lg cursor-pointer backdrop-blur-sm"
                   >
-                    Read the Manifest
-                  </button>
+                    Read the Lore ✨
+                  </motion.button>
                 </div>
+
+                {/* Live Activity Ticker */}
+                <div className="mb-2">
+                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-semibold mb-3">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse mr-1.5 mb-0.5" />
+                    Live Activity
+                  </p>
+                  <div className="overflow-hidden relative">
+                    <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#0b111e] to-transparent z-10" />
+                    <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#0b111e] to-transparent z-10" />
+                    <div className="flex gap-3 animate-marquee whitespace-nowrap">
+                      {[
+                        "🌿 @priya_s just hit Level 13",
+                        "🔥 @alex_m — 21 day streak! No way",
+                        "💚 @jay saved 2.4 kg CO₂ today",
+                        "🏆 @sam unlocked Earth Guardian",
+                        "⚡ @riya completed the No-Car challenge",
+                        "🚲 @dev cycled 8km this morning",
+                        "♻️ @nina sorted 30 items this week",
+                        "🌍 @raj planted a tree IRL fr",
+                      ].concat([
+                        "🌿 @priya_s just hit Level 13",
+                        "🔥 @alex_m — 21 day streak! No way",
+                        "💚 @jay saved 2.4 kg CO₂ today",
+                        "🏆 @sam unlocked Earth Guardian",
+                        "⚡ @riya completed the No-Car challenge",
+                        "🚲 @dev cycled 8km this morning",
+                        "♻️ @nina sorted 30 items this week",
+                        "🌍 @raj planted a tree IRL fr",
+                      ]).map((t, i) => (
+                        <span key={i} className="text-xs text-slate-400 px-3 py-1.5 rounded-full bg-white/4 border border-white/7 flex-shrink-0">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hero Stats */}
+                <HeroStats />
               </motion.div>
             </div>
 
-            <StatsStrip />
             <FeatureBentoGrid onEnterApp={() => setAppState("dashboard")} />
+            <GamificationShowcase onEnterApp={() => setAppState("dashboard")} />
+            <SdgImpactSection />
+            <GamesPreview onGoToGames={() => setAppState("games")} />
           </main>
         </motion.div>
+      )}
+
+      {appState === "games" && (
+        <GamesPage onBack={() => setAppState("landing")} />
       )}
 
       {appState === "dashboard" && (
@@ -193,8 +286,8 @@ export default function App() {
 
       {/* Floating Glassmorphic Bottom Navigation Dock - Transparency increased by 40% */}
       {appState !== "opening" && (
-        <BottomDock 
-          activeTab={appState}
+        <BottomDock
+          activeTab={appState === "games" ? "games" : appState === "dashboard" ? "dashboard" : "landing"}
           onTabChange={(tab) => setAppState(tab)}
           onReplayIntro={() => setAppState("opening")}
           theme={theme}

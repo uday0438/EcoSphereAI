@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
 
 // ─── Realistic Botanical Leaf SVG Variants ─────────────────────────────────
 // Each is a distinct, botanically-accurate leaf shape with midrib, secondary
@@ -170,7 +170,7 @@ const GinkgoLeaf = ({ fill, vein }: { fill: string; vein: string }) => (
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
-type LeafComponent = (props: { fill: string; vein: string }) => JSX.Element;
+type LeafComponent = (props: { fill: string; vein: string }) => React.ReactNode;
 
 const LEAF_VARIANTS: LeafComponent[] = [
   OvateLeaf,
