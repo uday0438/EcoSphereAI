@@ -36,6 +36,7 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
 
           {/* ── Home — 🌍 Earth Globe ── */}
           <button
+            id="dock-tab-landing"
             onClick={() => onTabChange("landing")}
             className={cn(
               "relative flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5",
@@ -66,9 +67,10 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
               Home
             </span>
           </button>
-
+ 
           {/* ── Dashboard ── */}
           <button
+            id="dock-tab-dashboard"
             onClick={() => onTabChange("dashboard")}
             className={cn(
               "relative flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5",
@@ -92,9 +94,10 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
               My Arc ⚡
             </span>
           </button>
-
+ 
           {/* ── Eco Scan ── */}
           <button
+            id="dock-tab-scan"
             onClick={() => onTabChange("scan")}
             className={cn(
               "relative flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5",
@@ -125,9 +128,10 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
               Eco Scan
             </span>
           </button>
-
+ 
           {/* ── Games ── */}
           <button
+            id="dock-tab-games"
             onClick={() => onTabChange("games")}
             className={cn(
               "relative flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5",
@@ -158,21 +162,25 @@ export function BottomDock({ activeTab, onTabChange, onReplayIntro, theme, onThe
               Games
             </span>
           </button>
-
+ 
         </div>
-
+ 
         {/* Vertical divider */}
         <div className="w-[1px] h-8 bg-white/10 mx-2 flex-shrink-0" aria-hidden="true" />
-
+ 
         {/* Quick Actions */}
         <div className="flex items-center gap-1 flex-shrink-0">
-          <button onClick={onThemeToggle}
+          <button 
+            id="dock-theme-toggle"
+            onClick={onThemeToggle}
             className={cn("p-2.5 rounded-full text-slate-400 hover:text-emerald-400 hover:bg-white/5", "transition-all duration-200 cursor-pointer active:scale-95")}
             title={theme === "dark" ? "Switch to Light" : "Switch to Dark"}
             aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}>
             {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
-          <button onClick={onReplayIntro}
+          <button 
+            id="dock-replay-intro"
+            onClick={onReplayIntro}
             className={cn("p-2.5 rounded-full text-slate-400 hover:text-emerald-400 hover:bg-white/5", "transition-all duration-200 cursor-pointer active:scale-95")}
             title="Replay Intro" aria-label="Replay intro sequence">
             <RotateCcw className="w-5 h-5" />

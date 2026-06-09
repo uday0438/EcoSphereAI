@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Leaf, FileScan, TrendingDown, Target, Zap, Medal, Gamepad2, ArrowRight } from "lucide-react";
 import { cn } from "../lib/utils";
-import { GAMES_META } from "./EcoArcadePage";
+import { GAMES_META } from "./gamesMeta";
 
 const stats = [
   { value: "4.2M kg", label: "CO₂ Slain 💪", color: "from-emerald-400 to-green-500", glow: "rgba(52,211,153,0.18)" },
@@ -159,6 +159,7 @@ export function FeatureBentoGrid({ onEnterApp }: { onEnterApp: () => void }) {
 
       <div className="flex justify-center">
         <motion.button
+          id="landing-launch-dashboard-btn"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onEnterApp}
@@ -241,7 +242,9 @@ export function GamesPreview({ onGoToGames }: { onGoToGames: () => void }) {
       {/* CTA */}
       <motion.div className="flex justify-center mt-8"
         initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
-        <motion.button onClick={onGoToGames}
+        <motion.button 
+          id="landing-play-all-games-btn"
+          onClick={onGoToGames}
           whileHover={{ scale: 1.06, boxShadow: "0 0 40px rgba(167,139,250,0.35)" }}
           whileTap={{ scale: 0.96 }}
           className="flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-violet-500 to-emerald-500 text-white font-black text-base shadow-[0_0_24px_rgba(167,139,250,0.2)] cursor-pointer">

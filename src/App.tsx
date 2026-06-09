@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion } from "motion/react";
 import { Header } from "./components/DashboardHeader";
 import { AICoachCard } from "./components/AICoachCard";
@@ -9,15 +9,17 @@ import { OpeningSequence } from "./components/OpeningSequence";
 import { FeatureBentoGrid, HeroStats, GamesPreview } from "./components/LandingPage";
 import { GamificationShowcase } from "./components/GamificationShowcase";
 import { SdgImpactSection } from "./components/SdgImpactSection";
-import { GamesPage } from "./components/EcoArcadePage";
 import { BottomDock } from "./components/BottomDock";
 import { GreenCertificateModal } from "./components/GreenCertificateModal";
 import { LeaderboardCard } from "./components/LeaderboardCard";
 import { SmartTipsCard } from "./components/SmartTipsCard";
 import { BackgroundLeaves } from "./components/BackgroundLeaves";
 import { ManifestModal } from "./components/ManifestModal";
-import { ScanGreenPage } from "./components/ScanGreenPage";
 import { Footer } from "./components/Footer";
+
+// Lazy-loaded pages to reduce initial bundle size and boost efficiency
+const GamesPage = lazy(() => import("./components/EcoArcadePage").then(m => ({ default: m.GamesPage })));
+const ScanGreenPage = lazy(() => import("./components/ScanGreenPage").then(m => ({ default: m.ScanGreenPage })));
 
 export default function App() {
   const [appState, setAppState] = useState<"opening" | "landing" | "dashboard" | "games" | "scan">("opening");
@@ -198,11 +200,25 @@ export default function App() {
       )}
 
       {appState === "games" && (
-        <GamesPage onBack={() => setAppState("landing")} />
+        <Suspense fallback={
+          <div className="min-h-screen hero-bg flex flex-col items-center justify-center text-white">
+            <div className="w-16 h-16 border-4 border-violet-500/20 border-t-violet-400 rounded-full animate-spin mb-4" />
+            <p className="font-bold text-sm tracking-widest text-violet-300 uppercase">Entering Eco Arcade...</p>
+          </div>
+        }>
+          <GamesPage onBack={() => setAppState("landing")} />
+        </Suspense>
       )}
 
       {appState === "scan" && (
-        <ScanGreenPage onBack={() => setAppState("landing")} />
+        <Suspense fallback={
+          <div className="min-h-screen hero-bg flex flex-col items-center justify-center text-white">
+            <div className="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-400 rounded-full animate-spin mb-4" />
+            <p className="font-bold text-sm tracking-widest text-emerald-300 uppercase">Initializing Green Scan...</p>
+          </div>
+        }>
+          <ScanGreenPage onBack={() => setAppState("landing")} />
+        </Suspense>
       )}
 
       {appState === "dashboard" && (

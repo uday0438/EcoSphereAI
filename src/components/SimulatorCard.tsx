@@ -205,6 +205,7 @@ export function SimulatorCard() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <button
+              id="telemetry-utility-meter-button"
               onClick={() => {
                 setIsMeterSynced(prev => {
                   const next = !prev;
@@ -223,6 +224,7 @@ export function SimulatorCard() {
               <span className="text-[10px] text-slate-500">{isMeterSynced ? "BESCOM Synced" : "BESCOM / Tata Power"}</span>
             </button>
             <button
+              id="telemetry-wearable-sync-button"
               onClick={() => {
                 setIsFitSynced(prev => {
                   const next = !prev;

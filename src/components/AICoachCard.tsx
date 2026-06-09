@@ -149,6 +149,7 @@ export function AICoachCard() {
           className="relative flex items-center"
         >
           <input
+            id="ai-coach-input-field"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -158,6 +159,7 @@ export function AICoachCard() {
             aria-label="Ask your climate coach"
           />
           <button 
+            id="ai-coach-submit-button"
             type="submit"
             disabled={!input.trim() || isLoading}
             className="absolute right-2 p-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full disabled:opacity-50 transition-colors"
